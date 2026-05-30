@@ -3,381 +3,224 @@ import 'package:flutter/material.dart';
 class AboutAppScreen extends StatelessWidget {
   const AboutAppScreen({super.key});
 
+  static const _green = Color(0xFF00A63E);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F8FA),
+      backgroundColor: const Color(0xFFF2F4F8),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF00A63E),
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text(
-          'حول التطبيق',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(colors: [Color(0xFF00C44F), _green], begin: Alignment.topLeft, end: Alignment.bottomRight),
           ),
         ),
+        elevation: 0,
         centerTitle: true,
-        actions: const [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Icon(Icons.home_outlined, color: Colors.white),
-          )
-        ],
+        title: const Text('عن التطبيق', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_forward, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          textDirection: TextDirection.rtl,
-          children: [
-            // App Info Card
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey[200]!),
-              ),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(
-                    width: 72,
-                    height: 72,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFF00A63E),
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: const Icon(
-                      Icons.home,
-                      color: Colors.white,
-                      size: 36,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'الخدمات المنزلية',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textDirection: TextDirection.rtl,
-                  ),
-                  const SizedBox(height: 4),
-                  const Text(
-                    'الإصدار 1.0.0',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'منصتك المتكاملة لجميع الخدمات المنزلية في مصر',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
-                    textAlign: TextAlign.center,
-                    textDirection: TextDirection.rtl,
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-            // Statistics Grid
-            Row(
-              textDirection: TextDirection.rtl,
-              children: [
-                Expanded(
-                  child: _buildStatCard('500+', 'فني محترف', const Color(0xFF00A63E)),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildStatCard('10,000+', 'عميل سعيد', const Color(0xFF00A63E)),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              textDirection: TextDirection.rtl,
-              children: [
-                Expanded(
-                  child: _buildStatCard('4.9', 'تقييم العملاء', const Color(0xFF00A63E)),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildStatCard('50,000+', 'خدمة مكتملة', const Color(0xFF00A63E)),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            // About Us
-            const Text(
-              'من نحن',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-              textDirection: TextDirection.rtl,
-              textAlign: TextAlign.right,
-            ),
-            const SizedBox(height: 12),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey[200]!),
-              ),
-              child: Text(
-                'نحن منصة رائدة في مجال الخدمات المنزلية في مصر، نربط بين العملاء وأفضل الفنيين المحترفين في مختلف المجالات.\n\nهدفنا هو توفير خدمات عالية الجودة بأسعار تنافسية، مع ضمان رضا العملاء وسلامة المعاملات.',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: Colors.grey[700],
-                  height: 1.6,
-                ),
-                textAlign: TextAlign.right,
-                textDirection: TextDirection.rtl,
-              ),
-            ),
-            const SizedBox(height: 24),
-            // Why Us
-            const Text(
-              'لماذا نحن؟',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-              textDirection: TextDirection.rtl,
-              textAlign: TextAlign.right,
-            ),
-            const SizedBox(height: 12),
-            Row(
-              textDirection: TextDirection.rtl,
-              children: [
-                Expanded(
-                  child: _buildFeatureCard(
-                    icon: Icons.people_outline,
-                    iconColor: Colors.blue,
-                    title: '+10,000 عميل',
-                    subtitle: 'ثقة آلاف العملاء',
-                    iconBgColor: Colors.blue[50]!,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildFeatureCard(
-                    icon: Icons.emoji_events_outlined,
-                    iconColor: Colors.orange,
-                    title: 'جودة عالية',
-                    subtitle: 'فنيون محترفون ومعتمدون',
-                    iconBgColor: Colors.orange[50]!,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              textDirection: TextDirection.rtl,
-              children: [
-                Expanded(
-                  child: _buildFeatureCard(
-                    icon: Icons.bolt,
-                    iconColor: Colors.purple,
-                    title: 'خدمة سريعة',
-                    subtitle: 'استجابة فورية',
-                    iconBgColor: Colors.purple[50]!,
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: _buildFeatureCard(
-                    icon: Icons.shield_outlined,
-                    iconColor: const Color(0xFF00A63E),
-                    title: 'أمان وثقة',
-                    subtitle: 'معاملات آمنة 100%',
-                    iconBgColor: const Color(0xFFE8F5E9),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            // Mission
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: const Color(0xFFE8F5E9),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Row(
-                textDirection: TextDirection.rtl,
-                children: [
-                  Icon(Icons.verified_user_outlined, color: Color(0xFF00A63E), size: 24),
-                  SizedBox(width: 12),
-                  Expanded(
+                  // --- Header Card ---
+                  _card(
+                    padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 16),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      textDirection: TextDirection.rtl,
                       children: [
-                        Text(
-                          'رسالتنا',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black87,
-                          ),
+                        Container(
+                          width: 80,
+                          height: 80,
+                          decoration: const BoxDecoration(color: _green, shape: BoxShape.circle),
+                          child: const Icon(Icons.home_work, color: Colors.white, size: 40),
                         ),
-                        SizedBox(height: 4),
-                        Text(
-                          'نسعى لجعل حياتك أسهل من خلال توفير خدمات منزلية موثوقة وسريعة مع الحفاظ على أعلى معايير الجودة والأمان.',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Color(0xFF2E7D32),
-                            height: 1.5,
-                          ),
-                          textAlign: TextAlign.right,
-                          textDirection: TextDirection.rtl,
+                        const SizedBox(height: 16),
+                        const Text('الخدمات المنزلية', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 4),
+                        const Text('الإصدار 1.0.0', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                        const SizedBox(height: 12),
+                        const Text(
+                          'منصتك المتكاملة لجميع الخدمات المنزلية في مصر',
+                          style: TextStyle(fontSize: 14, color: Colors.grey),
+                          textAlign: TextAlign.center,
                         ),
                       ],
                     ),
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 32),
-            // Footer
-            Center(
-              child: Column(
-                children: [
-                  Text(
-                    '© 2025 الخدمات المنزلية جميع الحقوق محفوظة',
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.grey[500],
-                    ),
-                    textDirection: TextDirection.rtl,
-                  ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 12),
+
+                  // --- Stats Grid ---
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    textDirection: TextDirection.rtl,
                     children: [
-                      Text(
-                        'صُنع بـ ',
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.grey[500],
-                        ),
-                        textDirection: TextDirection.rtl,
-                      ),
-                      const Icon(Icons.favorite, color: Colors.red, size: 12),
-                      Text(
-                        ' في مصر',
-                        style: TextStyle(
-                          fontSize: 11,
-                          color: Colors.grey[500],
-                        ),
-                        textDirection: TextDirection.rtl,
-                      ),
+                      Expanded(child: _statItem('500+', 'فني محترف', _green)),
+                      const SizedBox(width: 12),
+                      Expanded(child: _statItem('10,000+', 'عميل سعيد', _green)),
                     ],
-                  )
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(child: _statItem('4.9', 'تقييم العملاء', _green)),
+                      const SizedBox(width: 12),
+                      Expanded(child: _statItem('50,000+', 'خدمة مكتملة', _green)),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+
+                  // --- Who We Are ---
+                  _sectionTitle('من نحن'),
+                  _card(
+                    padding: const EdgeInsets.all(16),
+                    child: const Text(
+                      'نحن منصة رائدة في مجال الخدمات المنزلية في مصر، نربط بين العملاء وأفضل الفنيين المحترفين في مختلف المجالات.\n\nهدفنا هو توفير خدمات عالية الجودة بأسهار تنافسية، مع ضمان رضا العملاء وسلامة المعاملات.',
+                      style: TextStyle(fontSize: 13, height: 1.6, color: Colors.black87),
+                      textDirection: TextDirection.rtl,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  // --- Why Us? ---
+                  _sectionTitle('لماذا نحن؟'),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(child: _featureBox(Icons.people_alt_outlined, Colors.blue, '+10,000 عميل', 'ثقة آلاف العملاء')),
+                      const SizedBox(width: 12),
+                      Expanded(child: _featureBox(Icons.workspace_premium_outlined, Colors.orange, 'جودة عالية', 'فنيون محترفون ومعتمدون')),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(child: _featureBox(Icons.bolt, Colors.purple, 'خدمة سريعة', 'استجابة فورية')),
+                      const SizedBox(width: 12),
+                      Expanded(child: _featureBox(Icons.shield_outlined, Colors.green, 'أمان وثقة', 'معاملات آمنة 100%')),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+
+                  // --- Mission ---
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFE6F7EE),
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(color: _green.withOpacity(0.2)),
+                    ),
+                    child: Row(
+                      textDirection: TextDirection.rtl,
+                      children: [
+                        const Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text('رسالتنا', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold), textDirection: TextDirection.rtl),
+                              SizedBox(height: 8),
+                              Text(
+                                'نسعى لجعل حياتك أسهل من خلال توفير خدمات منزلية موثوقة وسريعة، مع الحفاظ على أعلى معايير الجودة والأمان.',
+                                style: TextStyle(fontSize: 13, height: 1.5, color: Colors.black87),
+                                textDirection: TextDirection.rtl,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Container(
+                          padding: const EdgeInsets.all(10),
+                          decoration: const BoxDecoration(color: _green, shape: BoxShape.circle),
+                          child: const Icon(Icons.favorite, color: Colors.white, size: 24),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 32),
+
+                  // --- Footer ---
+                  const Center(
+                    child: Column(
+                      children: [
+                        Text('© 2025 الخدمات المنزلية. جميع الحقوق محفوظة.', style: TextStyle(fontSize: 11, color: Colors.grey)),
+                        SizedBox(height: 4),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text('صنع بـ ', style: TextStyle(fontSize: 11, color: Colors.grey)),
+                            Icon(Icons.favorite, color: Colors.red, size: 12),
+                            Text(' في مصر', style: TextStyle(fontSize: 11, color: Colors.grey)),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 32),
                 ],
               ),
             ),
-            const SizedBox(height: 32),
-          ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildStatCard(String number, String label, Color color) {
+  // --- Widgets ---
+
+  Widget _card({required Widget child, EdgeInsetsGeometry? padding}) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 16),
+      padding: padding,
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: const Offset(0, 3))],
       ),
+      child: child,
+    );
+  }
+
+  Widget _statItem(String value, String label, Color color) {
+    return _card(
+      padding: const EdgeInsets.symmetric(vertical: 16),
       child: Column(
         children: [
-          Text(
-            number,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
-            textDirection: TextDirection.ltr,
-          ),
+          Text(value, style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: color)),
           const SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              color: Colors.grey[600],
-            ),
-            textAlign: TextAlign.center,
-            textDirection: TextDirection.rtl,
-          ),
+          Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
         ],
       ),
     );
   }
 
-  Widget _buildFeatureCard({
-    required IconData icon,
-    required Color iconColor,
-    required Color iconBgColor,
-    required String title,
-    required String subtitle,
-  }) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey[200]!),
-      ),
+  Widget _sectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12, right: 4),
+      child: Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold), textDirection: TextDirection.rtl),
+    );
+  }
+
+  Widget _featureBox(IconData icon, Color color, String title, String sub) {
+    return _card(
+      padding: const EdgeInsets.all(14),
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: iconBgColor,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(icon, color: iconColor, size: 24),
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(12)),
+            child: Icon(icon, color: color, size: 24),
           ),
           const SizedBox(height: 12),
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-            ),
-            textAlign: TextAlign.center,
-            textDirection: TextDirection.rtl,
-          ),
+          Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
           const SizedBox(height: 4),
-          Text(
-            subtitle,
-            style: TextStyle(
-              fontSize: 11,
-              color: Colors.grey[500],
-            ),
-            textAlign: TextAlign.center,
-            textDirection: TextDirection.rtl,
-          ),
+          Text(sub, style: const TextStyle(fontSize: 10, color: Colors.grey), textAlign: TextAlign.center),
         ],
       ),
     );
   }
 }
-

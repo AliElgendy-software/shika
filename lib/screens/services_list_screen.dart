@@ -101,213 +101,54 @@ class _ServicesListScreenState extends State<ServicesListScreen> {
     final filtered = _filteredServices;
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
-      body: Column(
-        children: [
-          // Green Header
-          Container(
-            padding: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFF00A63E), Color(0xFF008236)],
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-              ),
-            ),
-            child: Column(
-              children: [
-                // Top bar with back arrow
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_forward, color: Colors.white),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                    ],
-                  ),
-                ),
-                // Title
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
-                  child: Text(
-                    'كل خدمات البيت في مكان واحد',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textDirection: TextDirection.rtl,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Text(
-                    'اختر الخدمة المناسبة واحجز فني محترف في دقائق',
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.85),
-                      fontSize: 14,
-                    ),
-                    textDirection: TextDirection.rtl,
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                // Search bar
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 24),
-                  child: Container(
-                    height: 48,
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const TextField(
-                      textDirection: TextDirection.rtl,
-                      decoration: InputDecoration(
-                        hintText: 'ابحث عن خدمة...',
-                        hintStyle: TextStyle(color: Colors.grey, fontSize: 14),
-                        suffixIcon: Icon(Icons.search, color: Colors.grey),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20),
-              ],
-            ),
-          ),
-
-          // Category Filter Chips
-          Container(
-            color: Colors.white,
-            padding: const EdgeInsets.fromLTRB(0, 12, 0, 12),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                textDirection: TextDirection.rtl,
-                children: _categories.map((cat) => _buildCategoryChip(cat['label']!, cat['icon']!)).toList(),
-              ),
-            ),
-          ),
-
-          // Section header
-          Container(
-            color: Colors.white,
-            padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
-            child: Row(
-              textDirection: TextDirection.rtl,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  textDirection: TextDirection.rtl,
-                  children: [
-                    const Text(
-                      'الخدمات المتاحة',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                      textDirection: TextDirection.rtl,
-                    ),
-                    Text(
-                      'جميع الخدمات (${filtered.length})',
-                      style: TextStyle(fontSize: 12, color: Colors.grey[500]),
-                      textDirection: TextDirection.rtl,
-                    ),
-                  ],
-                ),
-                // Sort dropdown
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey[300]!),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.keyboard_arrow_down, size: 18, color: Colors.grey),
-                      const SizedBox(width: 4),
-                      Text(_sortBy, style: const TextStyle(fontSize: 12), textDirection: TextDirection.rtl),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 4),
-
-          // Services Grid
-          Expanded(
-            child: filtered.isEmpty
-                ? Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.search_off, size: 64, color: Colors.grey[300]),
-                        const SizedBox(height: 16),
-                        Text(
-                          'لا توجد خدمات في هذا التخصص',
-                          style: TextStyle(fontSize: 16, color: Colors.grey[500]),
-                          textDirection: TextDirection.rtl,
-                        ),
-                      ],
-                    ),
-                  )
-                : Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: GridView.builder(
-                      padding: const EdgeInsets.only(top: 8, bottom: 24),
-                      itemCount: filtered.length,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 12,
-                        crossAxisSpacing: 12,
-                        childAspectRatio: 0.72,
-                      ),
-                      itemBuilder: (context, index) {
-                        return _buildServiceCard(filtered[index]);
-                      },
-                    ),
-                  ),
+      backgroundColor: const Color(0xFFF7F8FA),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFF7F8FA),
+        elevation: 0,
+        centerTitle: true,
+        title: const Text(
+          'جميع الفئات',
+          style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_forward, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search, color: Colors.black),
+            onPressed: () {},
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildCategoryChip(String label, String emoji) {
-    final isSelected = _selectedCategory == label;
-    return Padding(
-      padding: const EdgeInsetsDirectional.only(start: 8),
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            _selectedCategory = label;
-          });
-        },
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-          decoration: BoxDecoration(
-            color: isSelected ? const Color(0xFF00A63E) : Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: isSelected ? const Color(0xFF00A63E) : Colors.grey[300]!),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 600),
+          child: Column(
             children: [
-              Text(emoji, style: const TextStyle(fontSize: 14)),
-              const SizedBox(width: 4),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
-                  color: isSelected ? Colors.white : Colors.black87,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+                child: Text(
+                  'اختر الفئة للعثور على مقدمي الخدمة المناسبين',
+                  style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                  textDirection: TextDirection.rtl,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Expanded(
+                child: GridView.builder(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  itemCount: filtered.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                    childAspectRatio: 0.9,
+                  ),
+                  itemBuilder: (context, index) {
+                    return _buildServiceCard(filtered[index]);
+                  },
                 ),
               ),
             ],
@@ -324,87 +165,82 @@ class _ServicesListScreenState extends State<ServicesListScreen> {
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            blurRadius: 6,
-            offset: const Offset(0, 3),
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          textDirection: TextDirection.rtl,
-          children: [
-            // Icon
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: data.bgColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(data.icon, color: data.iconColor, size: 24),
-            ),
-            const SizedBox(height: 10),
-            // Title
-            Text(
-              data.title,
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              textDirection: TextDirection.rtl,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 4),
-            // Description
-            Text(
-              data.description,
-              style: TextStyle(fontSize: 11, color: Colors.grey[600], height: 1.3),
-              textDirection: TextDirection.rtl,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const Spacer(),
-            // Rating + Tech count row
-            Row(
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const TechniciansListScreen()),
+            );
+          },
+          borderRadius: BorderRadius.circular(16),
+          child: Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               textDirection: TextDirection.rtl,
               children: [
-                Text('${data.techCount} فني', style: TextStyle(fontSize: 11, color: Colors.grey[500])),
+                // Top row: Icon box
+                Align(
+                  alignment: Alignment.topRight,
+                  child: Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF00A63E),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(data.icon, color: Colors.white, size: 18),
+                  ),
+                ),
+                const SizedBox(height: 6),
+                // Title
+                Text(
+                  data.category,
+                  style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                  textDirection: TextDirection.rtl,
+                ),
+                const SizedBox(height: 1),
+                // Description
+                Text(
+                  data.description,
+                  style: TextStyle(fontSize: 11, color: Colors.grey[500], height: 1.1),
+                  textDirection: TextDirection.rtl,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
                 const Spacer(),
-                const Icon(Icons.star, color: Colors.amber, size: 14),
-                const SizedBox(width: 2),
-                Text('${data.rating}', style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold)),
+                // Bottom row: Tech count + Arrow
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  textDirection: TextDirection.rtl,
+                  children: [
+                    Text(
+                      '${data.techCount} فني',
+                      style: const TextStyle(fontSize: 11, fontWeight: FontWeight.bold, color: Color(0xFF00A63E)),
+                      textDirection: TextDirection.rtl,
+                    ),
+                    Container(
+                      width: 20,
+                      height: 20,
+                      decoration: const BoxDecoration(
+                        color: Color(0xFF00A63E),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.arrow_forward, color: Colors.white, size: 12),
+                    ),
+                  ],
+                ),
               ],
             ),
-            const SizedBox(height: 6),
-            // Price
-            Text(
-              'يبدأ من   ${data.price}',
-              style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Color(0xFF00A63E)),
-              textDirection: TextDirection.rtl,
-            ),
-            const SizedBox(height: 8),
-            // Button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const TechniciansListScreen()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF00A63E),
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  elevation: 0,
-                ),
-                child: const Text('عرض الفنيين', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

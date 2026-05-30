@@ -3,7 +3,7 @@ import 'order_details_screen.dart';
 
 class OrdersScreen extends StatefulWidget {
   final VoidCallback? onBackPressed;
-  
+
   const OrdersScreen({super.key, this.onBackPressed});
 
   @override
@@ -11,84 +11,90 @@ class OrdersScreen extends StatefulWidget {
 }
 
 class _OrdersScreenState extends State<OrdersScreen> {
+  static const _green = Color(0xFF00A63E);
   String _selectedFilter = 'الكل';
 
-  // All orders data
   final List<Map<String, dynamic>> _allOrders = [
     {
       'status': 'مكتمل',
-      'statusColor': Colors.green,
+      'statusColor': Color(0xFF00A63E),
+      'statusBg': Color(0xFFE6F7EE),
+      'statusIcon': Icons.check_circle,
       'serviceName': 'تنظيف منزلي',
       'providerName': 'سارة محمد',
-      'date': '25 أكتوبر 2025 10:00 صباحاً',
+      'date': '25 أكتوبر 2025',
+      'time': '10:00 صباحاً',
       'price': '300 ج.م',
-      'icon': Icons.cleaning_services,
+      'icon': Icons.cleaning_services_outlined,
     },
     {
       'status': 'جاري التنفيذ',
-      'statusColor': Colors.green,
+      'statusColor': Color(0xFF1565C0),
+      'statusBg': Color(0xFFE3F0FF),
+      'statusIcon': Icons.loop,
       'serviceName': 'خدمة سباكة',
-      'providerName': 'عبد الرحمن نصر',
-      'date': '26 أكتوبر 2025 2:00 مساءً',
-      'price': '150 ج.م',
-      'icon': Icons.plumbing,
+      'providerName': 'محمد أحمد',
+      'date': '27 أكتوبر 2025',
+      'time': '2:00 مساءً',
+      'price': '450 ج.م',
+      'icon': Icons.plumbing_outlined,
     },
     {
       'status': 'قيد الانتظار',
-      'statusColor': Colors.orange,
+      'statusColor': Color(0xFFE65100),
+      'statusBg': Color(0xFFFFF3E0),
+      'statusIcon': Icons.access_time,
       'serviceName': 'إصلاح مكيف',
-      'providerName': 'محمد علي',
-      'date': '27 أكتوبر 2025 11:00 صباحاً',
-      'price': '250 ج.م',
-      'icon': Icons.ac_unit,
+      'providerName': 'أحمد حسن',
+      'date': '28 أكتوبر 2025',
+      'time': '11:00 صباحاً',
+      'price': '550 ج.م',
+      'icon': Icons.ac_unit_outlined,
     },
     {
       'status': 'ملغي',
-      'statusColor': Colors.red,
+      'statusColor': Color(0xFFB71C1C),
+      'statusBg': Color(0xFFFFEBEE),
+      'statusIcon': Icons.cancel,
       'serviceName': 'أعمال كهربائية',
-      'providerName': 'خالد حسن',
-      'date': '24 أكتوبر 2025 3:00 مساءً',
-      'price': '200 ج.م',
-      'icon': Icons.electrical_services,
+      'providerName': 'خالد علي',
+      'date': '20 أكتوبر 2025',
+      'time': '3:00 مساءً',
+      'price': '350 ج.م',
+      'icon': Icons.electrical_services_outlined,
     },
     {
       'status': 'مكتمل',
-      'statusColor': Colors.green,
+      'statusColor': Color(0xFF00A63E),
+      'statusBg': Color(0xFFE6F7EE),
+      'statusIcon': Icons.check_circle,
       'serviceName': 'دهان غرفة',
       'providerName': 'أحمد حسن',
-      'date': '20 أكتوبر 2025 9:00 صباحاً',
+      'date': '20 أكتوبر 2025',
+      'time': '9:00 صباحاً',
       'price': '500 ج.م',
-      'icon': Icons.format_paint,
-    },
-    {
-      'status': 'جاري التنفيذ',
-      'statusColor': Colors.green,
-      'serviceName': 'صيانة كهربائية',
-      'providerName': 'عبد الرحمن نصر',
-      'date': '28 أكتوبر 2025 4:00 مساءً',
-      'price': '200 ج.م',
-      'icon': Icons.bolt,
+      'icon': Icons.format_paint_outlined,
     },
   ];
 
-  List<Map<String, dynamic>> get _filteredOrders {
-    if (_selectedFilter == 'الكل') {
-      return _allOrders;
-    }
-    return _allOrders.where((order) => order['status'] == _selectedFilter).toList();
+  List<Map<String, dynamic>> get _filtered {
+    if (_selectedFilter == 'الكل') return _allOrders;
+    return _allOrders.where((o) => o['status'] == _selectedFilter).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    final filtered = _filteredOrders;
+    final filtered = _filtered;
 
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: const Color(0xFFF0FAF5),
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
+        centerTitle: true,
+        title: const Text('طلباتي', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold)),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: const Icon(Icons.arrow_forward, color: Colors.black),
           onPressed: () {
             if (widget.onBackPressed != null) {
               widget.onBackPressed!();
@@ -97,35 +103,28 @@ class _OrdersScreenState extends State<OrdersScreen> {
             }
           },
         ),
-        title: const Text(
-          'طلباتي',
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
       ),
       body: Column(
         children: [
-          // Filter Tabs
+          // Filter chips
           Container(
             color: Colors.white,
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
+              reverse: true,
               child: Row(
                 children: [
-                  _buildFilterTab('الكل'),
-                  _buildFilterTab('قيد الانتظار'),
-                  _buildFilterTab('جاري التنفيذ'),
-                  _buildFilterTab('مكتمل'),
-                  _buildFilterTab('ملغي'),
+                  _filterChip('الكل'),
+                  _filterChip('قيد الانتظار'),
+                  _filterChip('جاري التنفيذ'),
+                  _filterChip('مكتمل'),
+                  _filterChip('ملغي'),
                 ],
               ),
             ),
           ),
-          // Orders List
+          // Orders
           Expanded(
             child: filtered.isEmpty
                 ? Center(
@@ -133,12 +132,8 @@ class _OrdersScreenState extends State<OrdersScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Icon(Icons.inbox_outlined, size: 64, color: Colors.grey[300]),
-                        const SizedBox(height: 16),
-                        Text(
-                          'لا توجد طلبات في "$_selectedFilter"',
-                          style: TextStyle(fontSize: 16, color: Colors.grey[500]),
-                          textDirection: TextDirection.rtl,
-                        ),
+                        const SizedBox(height: 12),
+                        Text('لا توجد طلبات في هذه الفئة', style: TextStyle(fontSize: 15, color: Colors.grey[500]), textDirection: TextDirection.rtl),
                       ],
                     ),
                   )
@@ -146,18 +141,7 @@ class _OrdersScreenState extends State<OrdersScreen> {
                     padding: const EdgeInsets.all(16),
                     itemCount: filtered.length,
                     separatorBuilder: (_, __) => const SizedBox(height: 12),
-                    itemBuilder: (context, index) {
-                      final order = filtered[index];
-                      return _buildOrderCard(
-                        status: order['status'],
-                        statusColor: order['statusColor'],
-                        serviceName: order['serviceName'],
-                        providerName: order['providerName'],
-                        date: order['date'],
-                        price: order['price'],
-                        icon: order['icon'],
-                      );
-                    },
+                    itemBuilder: (context, index) => _orderCard(filtered[index]),
                   ),
           ),
         ],
@@ -165,26 +149,25 @@ class _OrdersScreenState extends State<OrdersScreen> {
     );
   }
 
-  Widget _buildFilterTab(String label) {
+  Widget _filterChip(String label) {
     final isSelected = _selectedFilter == label;
     return GestureDetector(
-      onTap: () {
-        setState(() {
-          _selectedFilter = label;
-        });
-      },
-      child: Container(
-        margin: const EdgeInsets.only(right: 8),
+      onTap: () => setState(() => _selectedFilter = label),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        margin: const EdgeInsets.only(left: 8),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFF00A63E) : Colors.transparent,
+          color: isSelected ? _green : Colors.grey.shade100,
           borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: isSelected ? _green : Colors.grey.shade300),
         ),
         child: Text(
           label,
           style: TextStyle(
             color: isSelected ? Colors.white : Colors.grey[700],
             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
+            fontSize: 13,
           ),
           textDirection: TextDirection.rtl,
         ),
@@ -192,107 +175,67 @@ class _OrdersScreenState extends State<OrdersScreen> {
     );
   }
 
-  Widget _buildOrderCard({
-    required String status,
-    required Color statusColor,
-    required String serviceName,
-    required String providerName,
-    required String date,
-    required String price,
-    required IconData icon,
-  }) {
+  Widget _orderCard(Map<String, dynamic> order) {
+    final Color statusColor = order['statusColor'] as Color;
+    final Color statusBg = order['statusBg'] as Color;
+
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const OrderDetailsScreen()),
-        );
-      },
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const OrderDetailsScreen())),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 5,
-              offset: const Offset(0, 2),
-            ),
-          ],
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 3))],
         ),
         child: Row(
+          textDirection: TextDirection.rtl,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Service Image Placeholder
-            Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                color: Colors.grey[200],
-                borderRadius: BorderRadius.circular(8),
+            // Service image (right side per RTL)
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                width: 80,
+                height: 80,
+                color: Colors.grey.shade100,
+                child: Icon(order['icon'] as IconData, color: Colors.grey.shade400, size: 36),
               ),
-              child: Icon(icon, color: Colors.grey[500], size: 30),
             ),
             const SizedBox(width: 12),
-            // Order Details
+            // Details
             Expanded(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: statusColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Text(
-                      status,
-                      style: TextStyle(
-                        color: statusColor,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
+                  // Status badge
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                      decoration: BoxDecoration(color: statusBg, borderRadius: BorderRadius.circular(20)),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(order['statusIcon'] as IconData, color: statusColor, size: 12),
+                          const SizedBox(width: 4),
+                          Text(order['status'] as String, style: TextStyle(color: statusColor, fontSize: 11, fontWeight: FontWeight.bold)),
+                        ],
                       ),
-                      textDirection: TextDirection.rtl,
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    serviceName,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textDirection: TextDirection.rtl,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'بواسطة $providerName',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[600],
-                    ),
-                    textDirection: TextDirection.rtl,
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    date,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.grey[500],
-                    ),
-                    textDirection: TextDirection.rtl,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    price,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xFF00A63E),
-                    ),
-                    textDirection: TextDirection.rtl,
-                  ),
+                  const SizedBox(height: 6),
+                  // Service name
+                  Text(order['serviceName'] as String, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold), textDirection: TextDirection.rtl),
+                  const SizedBox(height: 3),
+                  // Provider
+                  Text('بواسطة ${order['providerName']}', style: TextStyle(fontSize: 12, color: Colors.grey[600]), textDirection: TextDirection.rtl),
+                  const SizedBox(height: 3),
+                  // Date + time
+                  Text('${order['date']} - ${order['time']}', style: TextStyle(fontSize: 11, color: Colors.grey[500]), textDirection: TextDirection.rtl),
+                  const SizedBox(height: 6),
+                  // Price
+                  Text(order['price'] as String, style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: _green), textDirection: TextDirection.rtl),
                 ],
               ),
             ),

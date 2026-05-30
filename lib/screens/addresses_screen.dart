@@ -29,6 +29,7 @@ class AddressesScreen extends StatelessWidget {
           children: [
             // Home Address (Default)
             _buildAddressCard(
+              context: context,
               icon: Icons.home_outlined,
               iconColor: const Color(0xFF00A63E),
               iconBgColor: const Color(0xFFE8F6EE),
@@ -40,6 +41,7 @@ class AddressesScreen extends StatelessWidget {
 
             // Work Address
             _buildAddressCard(
+              context: context,
               icon: Icons.work_outline,
               iconColor: Colors.blue,
               iconBgColor: Colors.blue.withOpacity(0.1),
@@ -51,6 +53,7 @@ class AddressesScreen extends StatelessWidget {
 
             // Other Address
             _buildAddressCard(
+              context: context,
               icon: Icons.location_on_outlined,
               iconColor: Colors.grey[700]!,
               iconBgColor: Colors.grey[200]!,
@@ -95,6 +98,7 @@ class AddressesScreen extends StatelessWidget {
   }
 
   Widget _buildAddressCard({
+    required BuildContext context,
     required IconData icon,
     required Color iconColor,
     required Color iconBgColor,
@@ -180,7 +184,11 @@ class AddressesScreen extends StatelessWidget {
             children: [
               if (!isDefault) ...[
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('تم تعيين كعنوان افتراضي'), backgroundColor: Color(0xFF00A63E)),
+                    );
+                  },
                   style: TextButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                     minimumSize: Size.zero,
@@ -194,7 +202,11 @@ class AddressesScreen extends StatelessWidget {
                 const SizedBox(width: 16),
               ],
               TextButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('تعديل العنوان سيتم تفعيله قريباً'), backgroundColor: Color(0xFF00A63E)),
+                  );
+                },
                 icon: const Icon(Icons.edit_outlined, size: 16, color: Color(0xFF00A63E)),
                 label: const Text(
                   'تعديل',
@@ -208,7 +220,16 @@ class AddressesScreen extends StatelessWidget {
               ),
               const SizedBox(width: 16),
               TextButton.icon(
-                onPressed: () {},
+                onPressed: () {
+                  showDialog(context: context, builder: (ctx) => AlertDialog(
+                    title: const Text('حذف العنوان', textDirection: TextDirection.rtl),
+                    content: const Text('هل تريد حذف هذا العنوان؟', textDirection: TextDirection.rtl),
+                    actions: [
+                      TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('إلغاء')),
+                      TextButton(onPressed: () => Navigator.pop(ctx), child: const Text('حذف', style: TextStyle(color: Colors.red))),
+                    ],
+                  ));
+                },
                 icon: const Icon(Icons.delete_outline, size: 16, color: Colors.red),
                 label: const Text(
                   'حذف',

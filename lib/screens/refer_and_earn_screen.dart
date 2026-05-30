@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ReferAndEarnScreen extends StatelessWidget {
   const ReferAndEarnScreen({super.key});
@@ -71,7 +72,12 @@ class ReferAndEarnScreen extends StatelessWidget {
               children: [
                 Expanded(
                   child: ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      Clipboard.setData(const ClipboardData(text: 'SHIKA2025'));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('تم نسخ رمز الدعوة!'), backgroundColor: Color(0xFF00A63E)),
+                      );
+                    },
                     icon: const Icon(Icons.copy, size: 18, color: Colors.white),
                     label: const Text('نسخ الرمز', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white)),
                     style: ElevatedButton.styleFrom(
@@ -85,7 +91,11 @@ class ReferAndEarnScreen extends StatelessWidget {
                 const SizedBox(width: 12),
                 Expanded(
                   child: OutlinedButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('سيتم تفعيل المشاركة قريباً'), backgroundColor: Color(0xFF00A63E)),
+                      );
+                    },
                     icon: const Icon(Icons.share, size: 18, color: Color(0xFF00A63E)),
                     label: const Text('مشاركة', style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF00A63E))),
                     style: OutlinedButton.styleFrom(

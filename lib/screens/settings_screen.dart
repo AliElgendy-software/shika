@@ -1,180 +1,158 @@
 import 'package:flutter/material.dart';
-import 'privacy_policy_screen.dart';
-import 'contact_us_screen.dart';
-import 'faq_screen.dart';
+import 'package:shika/screens/provider/withdraw_earnings_screen.dart';
 
-class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({super.key});
+class ProviderSettingsScreen extends StatefulWidget {
+  const ProviderSettingsScreen({super.key});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
+  State<ProviderSettingsScreen> createState() => _ProviderSettingsScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class _ProviderSettingsScreenState extends State<ProviderSettingsScreen> {
+  static const _green = Color(0xFF00A63E);
+
   bool _notificationsEnabled = true;
+  bool _darkModeEnabled = false;
+  bool _autoAcceptEnabled = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F8FA),
+      backgroundColor: const Color(0xFFF2F4F8),
       appBar: AppBar(
-        title: const Text(
-          'الإعدادات',
-          style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
-        ),
+        title: const Text('الإعدادات', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: _green,
         elevation: 0,
-        leading: const SizedBox(),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.arrow_forward, color: Colors.black),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ],
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_forward, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
+        ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              // ─── الإعدادات العامة ───
+              _sectionLabel('الإعدادات العامة'),
+              _settingsCard([
+                _arrowTile(icon: Icons.language_outlined, iconColor: Colors.green, title: 'اللغة', trailText: 'العربية'),
+                _divider(),
+                _switchTile(icon: Icons.dark_mode_outlined, iconColor: Colors.teal, title: 'الوضع الليلي', subtitle: 'تفعيل المظهر الداكن', value: _darkModeEnabled, onChanged: (v) => setState(() => _darkModeEnabled = v)),
+                _divider(),
+                _switchTile(icon: Icons.notifications_none_outlined, iconColor: Colors.green, title: 'الإشعارات', subtitle: 'تلقي إشعارات الطلبات', value: _notificationsEnabled, onChanged: (v) => setState(() => _notificationsEnabled = v)),
+              ]),
+              const SizedBox(height: 24),
+
+              // ─── إعدادات العمل ───
+              _sectionLabel('إعدادات العمل'),
+              _settingsCard([
+                _switchTile(icon: Icons.phonelink_setup_outlined, iconColor: Colors.green, title: 'قبول تلقائي', subtitle: 'قبول الطلبات تلقائياً', value: _autoAcceptEnabled, onChanged: (v) => setState(() => _autoAcceptEnabled = v)),
+                _divider(),
+                _arrowTile(icon: Icons.access_time, iconColor: Colors.green, title: 'ساعات العمل', subtitle: 'من 9 ص - 9 م'),
+              ]),
+              const SizedBox(height: 24),
+
+              // ─── الأمان والخصوصية ───
+              _sectionLabel('الأمان والخصوصية'),
+              _settingsCard([
+                _arrowTile(icon: Icons.lock_outline, iconColor: Colors.green, title: 'تغيير كلمة المرور'),
+                _divider(),
+                _arrowTile(icon: Icons.shield_outlined, iconColor: Colors.green, title: 'الخصوصية والأمان'),
+              ]),
+              const SizedBox(height: 24),
+
+              // ─── روابط إضافية ───
+              _settingsCard([
+                _arrowTile(title: 'الشروط والأحكام'),
+                _divider(),
+                _arrowTile(title: 'سياسة الخصوصية'),
+                _divider(),
+                _arrowTile(title: 'عن التطبيق', trailText: 'الإصدار 1.0.0'),
+              ]),
+              const SizedBox(height: 40),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _sectionLabel(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12, right: 4),
+      child: Text(text, style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.grey[800]), textDirection: TextDirection.rtl),
+    );
+  }
+
+  Widget _settingsCard(List<Widget> children) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 10, offset: const Offset(0, 4))],
+      ),
+      child: Column(children: children),
+    );
+  }
+
+  Widget _switchTile({required IconData icon, required Color iconColor, required String title, String? subtitle, required bool value, required ValueChanged<bool> onChanged}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        textDirection: TextDirection.rtl,
+        children: [
+          Icon(icon, color: iconColor, size: 24),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                if (subtitle != null) Text(subtitle, style: TextStyle(fontSize: 11, color: Colors.grey[500])),
+              ],
+            ),
+          ),
+          Switch(value: value, onChanged: onChanged, activeColor: _green, activeTrackColor: _green.withOpacity(0.3)),
+        ],
+      ),
+    );
+  }
+
+  Widget _arrowTile({IconData? icon, Color? iconColor, required String title, String? subtitle, String? trailText, VoidCallback? onTap}) {
+    return InkWell(
+      onTap: onTap ?? () {},
+      borderRadius: BorderRadius.circular(16),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        child: Row(
+          textDirection: TextDirection.rtl,
           children: [
-            _buildSectionHeader('عام'),
-            _buildSettingsContainer([
-              _buildSettingsItem(
-                icon: Icons.notifications_none_outlined,
-                title: 'الإشعارات',
-                trailing: Switch(
-                  value: _notificationsEnabled,
-                  onChanged: (value) {
-                    setState(() {
-                      _notificationsEnabled = value;
-                    });
-                  },
-                  activeColor: const Color(0xFF00A63E),
-                ),
-              ),
-              _buildDivider(),
-              _buildSettingsItem(
-                icon: Icons.language_outlined,
-                title: 'اللغة',
-                trailing: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text('العربية', style: TextStyle(color: Colors.grey, fontSize: 14)),
-                    SizedBox(width: 8),
-                    Icon(Icons.arrow_back_ios, size: 14, color: Colors.grey),
-                  ],
-                ),
-              ),
-            ]),
-            const SizedBox(height: 24),
-            _buildSectionHeader('الأمان والخصوصية'),
-            _buildSettingsContainer([
-              _buildSettingsItem(
-                icon: Icons.lock_outline,
-                title: 'تغيير كلمة المرور',
-                showArrow: true,
-              ),
-              _buildDivider(),
-              _buildSettingsItem(
-                icon: Icons.policy_outlined,
-                title: 'سياسة الخصوصية',
-                showArrow: true,
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const PrivacyPolicyScreen()));
-                },
-              ),
-              _buildDivider(),
-              _buildSettingsItem(
-                icon: Icons.description_outlined,
-                title: 'الشروط والأحكام',
-                showArrow: true,
-              ),
-            ]),
-            const SizedBox(height: 24),
-            _buildSectionHeader('الدعم والمساعدة'),
-            _buildSettingsContainer([
-              _buildSettingsItem(
-                icon: Icons.headset_mic_outlined,
-                title: 'تواصل معنا',
-                showArrow: true,
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const ContactUsScreen()));
-                },
-              ),
-              _buildDivider(),
-              _buildSettingsItem(
-                icon: Icons.help_outline,
-                title: 'الأسئلة الشائعة',
-                showArrow: true,
-                onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => const FAQScreen()));
-                },
-              ),
-            ]),
-            const SizedBox(height: 32),
-            _buildSectionHeader('منطقة الخطر', color: Colors.red),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.red.withOpacity(0.3)),
-              ),
-              child: _buildSettingsItem(
-                icon: Icons.delete_outline,
-                iconColor: Colors.red,
-                title: 'حذف الحساب',
-                textColor: Colors.red,
-                isDangerous: true,
+            if (icon != null) ...[
+              Icon(icon, color: iconColor ?? Colors.grey[600], size: 24),
+              const SizedBox(width: 16),
+            ],
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                  if (subtitle != null) Text(subtitle, style: TextStyle(fontSize: 11, color: Colors.grey[500])),
+                ],
               ),
             ),
-            const SizedBox(height: 32),
+            if (trailText != null) ...[
+              Text(trailText, style: TextStyle(fontSize: 13, color: Colors.grey[500])),
+              const SizedBox(width: 8),
+            ],
+            Icon(Icons.arrow_back_ios, size: 14, color: Colors.grey[300]),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSectionHeader(String title, {Color? color}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12, right: 8),
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: Text(title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: color ?? Colors.black87), textDirection: TextDirection.rtl),
-      ),
-    );
-  }
-
-  Widget _buildSettingsContainer(List<Widget> children) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey[200]!),
-      ),
-      child: Column(children: children),
-    );
-  }
-
-  Widget _buildSettingsItem({
-    required IconData icon,
-    required String title,
-    Color? iconColor,
-    Color? textColor,
-    Widget? trailing,
-    bool showArrow = false,
-    bool isDangerous = false,
-    VoidCallback? onTap,
-  }) {
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-      leading: Icon(icon, color: iconColor ?? Colors.grey[600]),
-      title: Text(title, style: TextStyle(fontSize: 15, fontWeight: isDangerous ? FontWeight.bold : FontWeight.w600, color: textColor ?? Colors.black87), textDirection: TextDirection.rtl),
-      trailing: trailing ?? (showArrow ? const Icon(Icons.arrow_back_ios, size: 14, color: Colors.grey) : null),
-      onTap: onTap ?? () {},
-    );
-  }
-
-  Widget _buildDivider() {
-    return Divider(height: 1, thickness: 1, color: Colors.grey[100], indent: 16, endIndent: 16);
-  }
+  Widget _divider() => Divider(height: 1, thickness: 1, color: Colors.grey[50], indent: 16, endIndent: 16);
 }

@@ -1,396 +1,244 @@
 import 'package:flutter/material.dart';
-import 'tracking_screen.dart';
 import 'rate_provider_screen.dart';
 
 class OrderDetailsScreen extends StatelessWidget {
   const OrderDetailsScreen({super.key});
+
+  static const _green = Color(0xFF00A63E);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F8FA),
       appBar: AppBar(
-        backgroundColor: const Color(0xFFF7F8FA),
+        backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
-          'تفاصيل الطلب',
-          style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
-        ),
+        title: const Text('تفاصيل الطلب', style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold)),
         leading: IconButton(
-          icon: const Icon(Icons.arrow_forward, color: Colors.black), // RTL back arrow
+          icon: const Icon(Icons.arrow_forward, color: Colors.black),
           onPressed: () => Navigator.pop(context),
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            // Order Status & Header
-            Container(
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: Padding(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey[200]!),
-              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                textDirection: TextDirection.rtl,
                 children: [
-                  Row(
-                    textDirection: TextDirection.rtl,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'إصلاح سباكة',
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                        textDirection: TextDirection.rtl,
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        decoration: BoxDecoration(
-                          color: Colors.blue[50],
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: const Text(
-                          'قيد التنفيذ',
-                          style: TextStyle(color: Colors.blue, fontSize: 12, fontWeight: FontWeight.bold),
+                  // Title + status row
+                  _card(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Row(
                           textDirection: TextDirection.rtl,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'رقم الطلب: #12345',
-                    style: TextStyle(color: Colors.grey[500], fontSize: 13),
-                    textDirection: TextDirection.rtl,
-                  ),
-                  const SizedBox(height: 16),
-                  // Big Image Placeholder
-                  Container(
-                    height: 160,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.grey[300],
-                    ),
-                    child: const ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
-                      child: Icon(Icons.plumbing, size: 80, color: Colors.grey),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Date and Time
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey[200]!),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                textDirection: TextDirection.rtl,
-                children: [
-                  const Text(
-                    'التاريخ والوقت',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                    textDirection: TextDirection.rtl,
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    textDirection: TextDirection.rtl,
-                    children: [
-                      const Icon(Icons.calendar_today, color: Color(0xFF00A63E), size: 20),
-                      const SizedBox(width: 8),
-                      Text('15 نوفمبر 2024', style: TextStyle(color: Colors.grey[700], fontSize: 14)),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-                  Row(
-                    textDirection: TextDirection.rtl,
-                    children: [
-                      const Icon(Icons.access_time, color: Color(0xFF00A63E), size: 20),
-                      const SizedBox(width: 8),
-                      Text('10:00 ص - 12:00 م', style: TextStyle(color: Colors.grey[700], fontSize: 14)),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Provider Details
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey[200]!),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                textDirection: TextDirection.rtl,
-                children: [
-                  const Text(
-                    'مقدم الخدمة',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                    textDirection: TextDirection.rtl,
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    textDirection: TextDirection.rtl,
-                    children: [
-                      const CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Color(0xFF00A63E),
-                        child: Icon(Icons.person, color: Colors.white),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          textDirection: TextDirection.rtl,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text('محمد أحمد', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                            const SizedBox(height: 4),
-                            Row(
-                              textDirection: TextDirection.rtl,
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                              decoration: BoxDecoration(color: _green.withOpacity(0.1), borderRadius: BorderRadius.circular(20)),
+                              child: Row(
+                                children: [
+                                  const Icon(Icons.check_circle, color: _green, size: 14),
+                                  const SizedBox(width: 4),
+                                  const Text('تتبع الطلب', style: TextStyle(color: _green, fontSize: 12, fontWeight: FontWeight.bold)),
+                                ],
+                              ),
+                            ),
+                            const Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                const Text('4.8', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
-                                const SizedBox(width: 4),
-                                const Icon(Icons.star, color: Color(0xFF00A63E), size: 14),
+                                Text('إصلاح سباكة', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                                SizedBox(height: 2),
+                                Text('رقم الطلب: #12345', style: TextStyle(fontSize: 12, color: Colors.grey)),
                               ],
                             ),
                           ],
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    textDirection: TextDirection.rtl,
-                    children: [
-                      Expanded(
-                        child: ElevatedButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(Icons.chat_bubble_outline, size: 18),
-                          label: const Text('محادثة', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFF00A63E),
-                            foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        const SizedBox(height: 14),
+                        // Service image
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(12),
+                          child: Container(
+                            height: 150,
+                            color: Colors.grey.shade200,
+                            child: const Center(
+                              child: Icon(Icons.plumbing, size: 60, color: Colors.grey),
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: OutlinedButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(Icons.phone_outlined, size: 18, color: Colors.grey),
-                          label: const Text('اتصال', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.black87)),
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            side: BorderSide(color: Colors.grey[200]!),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                          ),
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
+                  const SizedBox(height: 14),
 
-            // Address
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey[200]!),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                textDirection: TextDirection.rtl,
-                children: [
-                  const Text(
-                    'العنوان',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                    textDirection: TextDirection.rtl,
+                  // Date & Time
+                  _card(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        const Text('التاريخ والوقت', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold), textDirection: TextDirection.rtl),
+                        const SizedBox(height: 12),
+                        _iconRow(Icons.calendar_today_outlined, Colors.blue, '15 نوفمبر 2024'),
+                        const SizedBox(height: 8),
+                        _iconRow(Icons.access_time, _green, '10:00 ص - 12:00 م'),
+                      ],
+                    ),
                   ),
-                  const SizedBox(height: 12),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    textDirection: TextDirection.rtl,
-                    children: [
-                      const Icon(Icons.location_on_outlined, color: Color(0xFF00A63E), size: 20),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          'شارع النيل، المعادي، القاهرة',
-                          style: TextStyle(color: Colors.grey[700], fontSize: 14, height: 1.5),
+                  const SizedBox(height: 14),
+
+                  // Provider
+                  _card(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        const Text('مقدم الخدمة', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold), textDirection: TextDirection.rtl),
+                        const SizedBox(height: 12),
+                        Row(
+                          textDirection: TextDirection.rtl,
+                          children: [
+                            CircleAvatar(backgroundColor: _green.withOpacity(0.15), radius: 26, child: const Text('أم', style: TextStyle(color: _green, fontWeight: FontWeight.bold, fontSize: 16))),
+                            const SizedBox(width: 12),
+                            const Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text('محمد أحمد', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                                  SizedBox(height: 2),
+                                  Row(
+                                    textDirection: TextDirection.rtl,
+                                    children: [
+                                      Icon(Icons.star, color: Colors.amber, size: 14),
+                                      SizedBox(width: 4),
+                                      Text('4.8', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Row(
+                              children: [
+                                _contactBtn(Icons.phone_outlined, 'اتصال', Colors.blue),
+                                const SizedBox(width: 8),
+                                _contactBtnFilled(Icons.chat_bubble_outline, 'محادثة'),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+
+                  // Address
+                  _card(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        const Text('العنوان', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold), textDirection: TextDirection.rtl),
+                        const SizedBox(height: 10),
+                        _iconRow(Icons.location_on_outlined, _green, 'شارع النيل، المعادي، القاهرة'),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+
+                  // Notes
+                  _card(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        const Text('ملاحظات', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold), textDirection: TextDirection.rtl),
+                        const SizedBox(height: 10),
+                        const Text(
+                          'يرجى الحضور في الموعد المحدد. المشكلة في حنفية المطبخ.',
+                          style: TextStyle(fontSize: 13, color: Colors.grey, height: 1.5),
                           textDirection: TextDirection.rtl,
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
+                  const SizedBox(height: 20),
 
-            // Notes
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey[200]!),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                textDirection: TextDirection.rtl,
-                children: [
-                  const Text(
-                    'ملاحظات',
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-                    textDirection: TextDirection.rtl,
+                  // Rate button
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (_) => const RateProviderScreen()));
+                    },
+                    icon: const Icon(Icons.star_border, color: Colors.white),
+                    label: const Text('تقييم الخدمة', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.white)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _green,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                      elevation: 0,
+                    ),
                   ),
-                  const SizedBox(height: 12),
-                  Text(
-                    'يرجى الحضور في الموعد المحدد. المشكلة في حنفية المطبخ.',
-                    style: TextStyle(color: Colors.grey[700], fontSize: 13, height: 1.5),
-                    textDirection: TextDirection.rtl,
-                  ),
+                  const SizedBox(height: 16),
                 ],
               ),
             ),
-            const SizedBox(height: 24),
-          ],
+          ),
         ),
       ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 10,
-              offset: const Offset(0, -2),
-            ),
-          ],
+    );
+  }
+
+  static Widget _card({required Widget child}) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: const Offset(0, 3))],
+      ),
+      child: child,
+    );
+  }
+
+  static Widget _iconRow(IconData icon, Color color, String text) {
+    return Row(
+      textDirection: TextDirection.rtl,
+      children: [
+        Container(
+          width: 32,
+          height: 32,
+          decoration: BoxDecoration(color: color.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+          child: Icon(icon, color: color, size: 18),
         ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: const Color(0xFF00A63E),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                textDirection: TextDirection.rtl,
-                children: [
-                  const Text('إجمالي التكلفة', style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold)),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    textDirection: TextDirection.rtl,
-                    children: [
-                      const Text('250', style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
-                      const SizedBox(width: 4),
-                      Text('ج.م', style: TextStyle(color: Colors.white.withOpacity(0.9), fontSize: 14)),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 12),
-            // Tracking & Rate buttons
-            Row(
-              textDirection: TextDirection.rtl,
-              children: [
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const TrackingScreen()));
-                    },
-                    icon: const Icon(Icons.location_on_outlined, size: 20, color: Color(0xFF00A63E)),
-                    label: const Text('تتبع مقدم الخدمة', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Color(0xFF00A63E))),
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Color(0xFF00A63E)),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: OutlinedButton.icon(
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => const RateProviderScreen()));
-                    },
-                    icon: const Icon(Icons.star_outline, size: 20, color: Colors.amber),
-                    label: const Text('تقييم الخدمة', style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: Colors.amber)),
-                    style: OutlinedButton.styleFrom(
-                      side: const BorderSide(color: Colors.amber),
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            Row(
-              textDirection: TextDirection.rtl,
-              children: [
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(Icons.check_circle_outline, size: 20),
-                    label: const Text('إتمام الطلب', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF00A63E),
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: ElevatedButton.icon(
-                    onPressed: () {},
-                    icon: const Icon(Icons.cancel_outlined, size: 20),
-                    label: const Text('إلغاء الطلب', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ],
-        ),
+        const SizedBox(width: 10),
+        Text(text, style: const TextStyle(fontSize: 13), textDirection: TextDirection.rtl),
+      ],
+    );
+  }
+
+  static Widget _contactBtn(IconData icon, String label, Color color) {
+    return OutlinedButton.icon(
+      onPressed: () {},
+      icon: Icon(icon, size: 16, color: color),
+      label: Text(label, style: TextStyle(color: color, fontSize: 12)),
+      style: OutlinedButton.styleFrom(
+        side: BorderSide(color: color.withOpacity(0.4)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      ),
+    );
+  }
+
+  static Widget _contactBtnFilled(IconData icon, String label) {
+    return ElevatedButton.icon(
+      onPressed: () {},
+      icon: Icon(icon, size: 16, color: Colors.white),
+      label: Text(label, style: const TextStyle(color: Colors.white, fontSize: 12)),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: const Color(0xFF00A63E),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        elevation: 0,
       ),
     );
   }

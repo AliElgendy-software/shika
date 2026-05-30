@@ -192,7 +192,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: OutlinedButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(content: Text('تسجيل الدخول بـ Google سيتم تفعيله قريباً'), backgroundColor: Color(0xFF00A63E)),
+                      );
+                    },
                     icon: Image.asset(
                       'assets/images/google_logo.png',
                       height: 24,

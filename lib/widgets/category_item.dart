@@ -23,21 +23,17 @@ class CategoryItem extends StatelessWidget {
             MaterialPageRoute(builder: (context) => const ServicesListScreen()),
           );
         },
+        behavior: HitTestBehavior.opaque,
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: 4),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: const Color(0xFF00A63E),
             borderRadius: BorderRadius.circular(14),
             boxShadow: [
               BoxShadow(
-                color: Colors.black.withOpacity(0.12),
+                color: const Color(0xFF00A63E).withOpacity(0.3),
                 blurRadius: 6,
                 offset: const Offset(0, 4),
-              ),
-              BoxShadow(
-                color: Colors.black.withOpacity(0.08),
-                blurRadius: 4,
-                offset: const Offset(0, 2),
               ),
             ],
           ),
@@ -50,12 +46,12 @@ class CategoryItem extends StatelessWidget {
                   width: 60,
                   height: 60,
                   decoration: BoxDecoration(
-                    color: color.withOpacity(0.15),
+                    color: Colors.white.withOpacity(0.2),
                     borderRadius: BorderRadius.circular(18),
                   ),
                   child: Icon(
                     icon,
-                    color: color,
+                    color: Colors.white,
                     size: 28,
                   ),
                 ),
@@ -65,6 +61,7 @@ class CategoryItem extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
+                    color: Colors.white,
                   ),
                   textAlign: TextAlign.center,
                   textDirection: TextDirection.rtl,

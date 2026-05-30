@@ -11,6 +11,7 @@ import 'contact_us_screen.dart';
 import 'rate_app_screen.dart';
 import 'about_app_screen.dart';
 import 'login_screen.dart';
+import 'notifications_screen.dart';
 import 'favorites_screen.dart';
 import 'wallet_screen.dart';
 import 'refer_and_earn_screen.dart';
@@ -108,7 +109,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     child: const Icon(Icons.notifications, color: Colors.white, size: 20),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const NotificationsScreen()));
+                  },
                   padding: EdgeInsets.zero,
                 ),
                 Positioned(
@@ -270,18 +273,36 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
 
           // Categories Section
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'الفئات',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   textDirection: TextDirection.rtl,
+                  children: [
+                    const Text(
+                      'الفئات',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textDirection: TextDirection.rtl,
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => const ServicesListScreen()));
+                      },
+                      child: const Text(
+                        'عرض الكل',
+                        style: TextStyle(
+                          color: Color(0xFF00A63E),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 12),
                 Row(
@@ -329,7 +350,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   textDirection: TextDirection.rtl,
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const TechniciansListScreen()));
+                  },
                   child: const Text(
                     'عرض الكل',
                     style: TextStyle(

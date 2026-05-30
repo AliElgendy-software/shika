@@ -8,6 +8,7 @@ import 'notifications_screen.dart';
 import 'payment_methods_screen.dart';
 import 'wallet_screen.dart';
 import 'refer_and_earn_screen.dart';
+import 'login_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -202,7 +203,13 @@ class ProfileScreen extends StatelessWidget {
                         icon: Icons.logout,
                         title: 'تسجيل الخروج',
                         textColor: Colors.red,
-                        onTap: () {},
+                        onTap: () {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => const LoginScreen()),
+                            (route) => false,
+                          );
+                        },
                       ),
                       const SizedBox(height: 24),
                       const Center(

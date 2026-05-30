@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'payment_methods_screen.dart';
 
 class WalletScreen extends StatelessWidget {
   const WalletScreen({super.key});
@@ -49,7 +50,9 @@ class WalletScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton.icon(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const PaymentMethodsScreen()));
+                    },
                     icon: const Icon(Icons.add, color: Color(0xFF00A63E)),
                     label: const Text('إضافة رصيد', style: TextStyle(color: Color(0xFF00A63E), fontWeight: FontWeight.bold)),
                     style: ElevatedButton.styleFrom(

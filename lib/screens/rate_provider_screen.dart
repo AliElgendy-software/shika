@@ -8,8 +8,17 @@ class RateProviderScreen extends StatefulWidget {
 }
 
 class _RateProviderScreenState extends State<RateProviderScreen> {
-  int _rating = 0;
-  final TextEditingController _commentController = TextEditingController();
+  static const _green = Color(0xFF00A63E);
+
+  double _overallRating = 0;
+  double _qualityRating = 0;
+  double _punctualityRating = 0;
+  double _professionalismRating = 0;
+  double _cleanlinessRating = 0;
+  final _commentController = TextEditingController();
+  final Set<String> _selectedTags = {};
+
+  static const _tags = ['ممتاز', 'محترم', 'ملتزم بالمواعيد', 'نظيف', 'سريع'];
 
   @override
   void dispose() {
@@ -20,7 +29,7 @@ class _RateProviderScreenState extends State<RateProviderScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFFF7F8FA),
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -32,149 +41,228 @@ class _RateProviderScreenState extends State<RateProviderScreen> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            const SizedBox(height: 16),
-            // Provider avatar
-            Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                color: Colors.green[100],
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.person, color: Color(0xFF00A63E), size: 48),
-            ),
-            const SizedBox(height: 16),
-            const Text('عبد الرحمن نصر', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), textDirection: TextDirection.rtl),
-            const SizedBox(height: 4),
-            Text('خدمة سباكة', style: TextStyle(fontSize: 14, color: Colors.grey[600]), textDirection: TextDirection.rtl),
-            const SizedBox(height: 32),
-            const Text(
-              'كيف كانت تجربتك؟',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black87),
-              textDirection: TextDirection.rtl,
-            ),
-            const SizedBox(height: 24),
-            // Stars
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: List.generate(5, (index) {
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _rating = index + 1;
-                    });
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4),
-                    child: Icon(
-                      index < _rating ? Icons.star : Icons.star_border,
-                      color: Colors.amber,
-                      size: 48,
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 500),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // Provider card
+                  _card(
+                    child: Row(
+                      textDirection: TextDirection.rtl,
+                      children: [
+                        CircleAvatar(backgroundColor: _green.withOpacity(0.15), radius: 26, child: const Text('عن', style: TextStyle(color: _green, fontWeight: FontWeight.bold, fontSize: 15))),
+                        const SizedBox(width: 12),
+                        const Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text('عبدالرحمن نصر', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                              SizedBox(height: 2),
+                              Text('صيانة تكييف', style: TextStyle(fontSize: 12, color: Colors.grey)),
+                            ],
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            const Icon(Icons.calendar_today_outlined, size: 13, color: Colors.grey),
+                            const SizedBox(width: 4),
+                            const Text('23 مارس 2026', style: TextStyle(fontSize: 11, color: Colors.grey)),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
-                );
-              }),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              _rating == 0 ? '' : _rating <= 2 ? 'يحتاج تحسين' : _rating <= 3 ? 'جيد' : _rating == 4 ? 'ممتاز' : 'رائع جداً!',
-              style: TextStyle(fontSize: 16, color: Colors.grey[600], fontWeight: FontWeight.w500),
-            ),
-            const SizedBox(height: 32),
-            // Comment
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.grey[50],
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: Colors.grey[200]!),
+                  const SizedBox(height: 16),
+
+                  // Overall rating
+                  _card(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text('كيف كانت تجربتك؟', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold), textDirection: TextDirection.rtl),
+                        const SizedBox(height: 4),
+                        const Text('قيّم الخدمة التي حصلت عليها', style: TextStyle(fontSize: 12, color: Colors.grey), textDirection: TextDirection.rtl),
+                        const SizedBox(height: 16),
+                        _starRow(_overallRating, 32, (v) => setState(() => _overallRating = v)),
+                        const SizedBox(height: 12),
+                        Text(
+                          _overallRating == 0 ? 'اختر تقييمك' : _ratingLabel(_overallRating),
+                          style: TextStyle(fontSize: 13, color: _overallRating == 0 ? Colors.grey : _green, fontWeight: FontWeight.w600),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Detailed ratings
+                  _card(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        const Text('تقييم تفصيلي', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold), textDirection: TextDirection.rtl),
+                        const SizedBox(height: 14),
+                        _detailRow(Icons.thumb_up_outlined, Colors.blue, 'جودة العمل', _qualityRating, (v) => setState(() => _qualityRating = v)),
+                        const SizedBox(height: 12),
+                        _detailRow(Icons.access_time, _green, 'الالتزام بالمواعيد', _punctualityRating, (v) => setState(() => _punctualityRating = v)),
+                        const SizedBox(height: 12),
+                        _detailRow(Icons.workspace_premium_outlined, Colors.purple, 'الاحترافية', _professionalismRating, (v) => setState(() => _professionalismRating = v)),
+                        const SizedBox(height: 12),
+                        _detailRow(Icons.cleaning_services_outlined, Colors.orange, 'النظافة', _cleanlinessRating, (v) => setState(() => _cleanlinessRating = v)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Comment
+                  _card(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        const Text('أضف تعليقك (اختياري)', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold), textDirection: TextDirection.rtl),
+                        const SizedBox(height: 12),
+                        TextField(
+                          controller: _commentController,
+                          maxLines: 4,
+                          maxLength: 500,
+                          textDirection: TextDirection.rtl,
+                          decoration: InputDecoration(
+                            hintText: 'شارك تجربتك مع الآخرين...',
+                            hintStyle: TextStyle(color: Colors.grey[400], fontSize: 13),
+                            filled: true,
+                            fillColor: Colors.grey.shade50,
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey.shade200)),
+                            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(12), borderSide: BorderSide(color: Colors.grey.shade200)),
+                            focusedBorder: const OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(12)), borderSide: BorderSide(color: _green, width: 2)),
+                            contentPadding: const EdgeInsets.all(14),
+                          ),
+                          onChanged: (_) => setState(() {}),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+
+                  // Quick tags
+                  _card(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        const Text('أضف وسوماً سريعة', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold), textDirection: TextDirection.rtl),
+                        const SizedBox(height: 12),
+                        Wrap(
+                          alignment: WrapAlignment.end,
+                          spacing: 8,
+                          runSpacing: 8,
+                          children: _tags.map((tag) {
+                            final selected = _selectedTags.contains(tag);
+                            return GestureDetector(
+                              onTap: () => setState(() {
+                                if (selected) _selectedTags.remove(tag); else _selectedTags.add(tag);
+                              }),
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 180),
+                                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                                decoration: BoxDecoration(
+                                  color: selected ? _green : Colors.grey.shade100,
+                                  borderRadius: BorderRadius.circular(20),
+                                  border: Border.all(color: selected ? _green : Colors.grey.shade300),
+                                ),
+                                child: Text(tag, style: TextStyle(fontSize: 13, color: selected ? Colors.white : Colors.grey.shade700, fontWeight: FontWeight.w500)),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+
+                  // Submit button
+                  ElevatedButton(
+                    onPressed: _overallRating > 0 ? () => Navigator.popUntil(context, (r) => r.isFirst) : null,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: _green,
+                      disabledBackgroundColor: Colors.grey.shade300,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                      elevation: 0,
+                    ),
+                    child: const Text('إرسال التقييم', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
+                  ),
+                  const SizedBox(height: 16),
+                ],
               ),
-              child: TextField(
-                controller: _commentController,
-                textDirection: TextDirection.rtl,
-                maxLines: 4,
-                decoration: InputDecoration(
-                  hintText: 'اكتب تعليقك هنا (اختياري)...',
-                  hintStyle: TextStyle(color: Colors.grey[400]),
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.all(16),
-                ),
-              ),
             ),
-            const SizedBox(height: 24),
-            // Quick tags
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              alignment: WrapAlignment.center,
-              children: [
-                _buildQuickTag('محترف'),
-                _buildQuickTag('دقيق في المواعيد'),
-                _buildQuickTag('سعر مناسب'),
-                _buildQuickTag('عمل متقن'),
-                _buildQuickTag('تعامل ممتاز'),
-                _buildQuickTag('سريع'),
-              ],
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 1,
-              blurRadius: 10,
-              offset: const Offset(0, -2),
-            ),
-          ],
-        ),
-        child: ElevatedButton(
-          onPressed: _rating > 0 ? () {
-            Navigator.pop(context);
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('شكراً لتقييمك!', textDirection: TextDirection.rtl),
-                backgroundColor: Color(0xFF00A63E),
-              ),
-            );
-          } : null,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: const Color(0xFF00A63E),
-            disabledBackgroundColor: Colors.grey[300],
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            elevation: 0,
           ),
-          child: const Text('إرسال التقييم', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white)),
         ),
       ),
     );
   }
 
-  Widget _buildQuickTag(String label) {
-    return GestureDetector(
-      onTap: () {
-        final current = _commentController.text;
-        _commentController.text = current.isEmpty ? label : '$current، $label';
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        decoration: BoxDecoration(
-          color: const Color(0xFF00A63E).withOpacity(0.1),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: const Color(0xFF00A63E).withOpacity(0.3)),
+  String _ratingLabel(double r) {
+    if (r >= 5) return 'ممتاز';
+    if (r >= 4) return 'جيد جداً';
+    if (r >= 3) return 'جيد';
+    if (r >= 2) return 'مقبول';
+    return 'سيء';
+  }
+
+  Widget _starRow(double value, double size, ValueChanged<double> onChange) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(5, (i) {
+        return GestureDetector(
+          onTap: () => onChange(i + 1.0),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 4),
+            child: Icon(i < value ? Icons.star : Icons.star_border, color: Colors.amber, size: size),
+          ),
+        );
+      }),
+    );
+  }
+
+  Widget _detailRow(IconData icon, Color color, String label, double value, ValueChanged<double> onChange) {
+    return Row(
+      textDirection: TextDirection.rtl,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          textDirection: TextDirection.rtl,
+          children: [
+            Icon(icon, color: color, size: 18),
+            const SizedBox(width: 8),
+            Text(label, style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w500), textDirection: TextDirection.rtl),
+          ],
         ),
-        child: Text(
-          label,
-          style: const TextStyle(fontSize: 13, color: Color(0xFF00A63E), fontWeight: FontWeight.w500),
+        Row(
+          children: List.generate(5, (i) {
+            return GestureDetector(
+              onTap: () => onChange(i + 1.0),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 2),
+                child: Icon(i < value ? Icons.star : Icons.star_border, color: Colors.amber, size: 22),
+              ),
+            );
+          }),
         ),
+      ],
+    );
+  }
+
+  static Widget _card({required Widget child}) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: const Offset(0, 3))],
       ),
+      child: child,
     );
   }
 }
